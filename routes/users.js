@@ -32,11 +32,11 @@ router.delete("/:id", async(req,res) => {
   if(req.body.userId == req.params.id || req.user.isAdmin)
   {
     try{
-      const user = await User.deleteOne(req.params.id);
+      const user = await User.deleteOne({_id:req.params.id});
       res.status(200).json("Account has been deleted");
     }
     catch(err){
-      return res.status(500).json(err);
+      return res.status(500).json(err.message);
 
     }
 

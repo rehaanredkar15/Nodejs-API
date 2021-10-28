@@ -53,8 +53,10 @@ router.get("/:id", async(req,res) => {
 
   try{
      const user = await User.findById(req.params.id);
-     res.status(200).json(user);
-
+     const {password,updateAt,...other} = user._doc
+     
+     res.status(200).json(other);
+    
   }
   catch(err){
      res.status(500).json(err);
@@ -62,6 +64,7 @@ router.get("/:id", async(req,res) => {
 
 
 })
+
 
 
 module.exports = router;

@@ -71,9 +71,7 @@ router.put("/:id/follow", async(req,res) => {
 
   if(req.body.userId != req.params.id)
   {
-
     try{
-          
           const user = await User.findById(req.params.id);
           const currentUser = await User.findById(req.body.userId);
           //findById for getting the user by Id
@@ -88,15 +86,41 @@ router.put("/:id/follow", async(req,res) => {
           else{
             res.status(403).json("You already follow this user");
           }
-
     }
     catch(err) 
     {
       res.status(403).json("You cant follow yourself");
-
     }
+  }
+})
 
 
+
+//unfollow a user 
+router.put("/:id/unfollow", async(req,res) => {
+
+  if(req.body.userId != req.params.id)
+  {
+    try{
+          const user = await User.findById(req.params.id);
+          const currentUser = await User.findById(req.body.userId);
+          //findById for getting the user by Id
+
+          if(user.followers.includes(req.body.userId))
+          {
+            await user.updateOne({$pull:{followers: req.body.userId}});
+            //pull keyword is used to remove some data inside the data 
+            await currentUser.updateOne({$pull:{followings:req.params.id}});
+              res.status(200).json("User has  been unfollowed");
+          }
+          else{
+            res.status(403).json("You dont follow this user");
+          }
+    }
+    catch(err) 
+    {
+      res.status(403).json("You cant unfollow yourself");
+    }
   }
 })
 

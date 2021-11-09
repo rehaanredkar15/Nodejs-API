@@ -26,22 +26,20 @@ router.put("/:id", async (req, res) => {
   }
 });
 
+
+
 //delete user 
 router.delete("/:id", async(req,res) => {
-
   if(req.body.userId == req.params.id || req.user.isAdmin)
   {
     try{
       const user = await User.findByIdAndDelete(req.params.id);
-
       //findByIdAndDelete for searching and deleting other function is deleteOne
       res.status(200).json("Account has been deleted");
     }
     catch(err){
       return res.status(500).json(err.message);
-
     }
-
   }
   else{
     return res.status(403).json("You can delete only your account!"); 
@@ -49,16 +47,16 @@ router.delete("/:id", async(req,res) => {
 })
 
 
-//get user 
 
+
+//get user 
 router.get("/:id", async(req,res) => {
 
   try{
      const user = await User.findById(req.params.id);
      const {password,updateAt,...other} = user._doc
      // destructing the data and removing password and updateAt from received data by only passing other data 
-     res.status(200).json(other);
-    
+     res.status(200).json(other); 
   }
   catch(err){
      res.status(500).json(err);

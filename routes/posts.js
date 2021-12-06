@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 
 router.post("/", async (req,res) => {
@@ -96,13 +97,13 @@ router.get("/:id", async (req, res) => {
 
 
 //get timeline posts
-router.get("/timeline/all", async (req, res) => {
+router.get("/timeline/:userId", async (req, res) => {
   try {
-    const currentUser = await User.findById(req.body.userId);
 
      //first we get the current user so that we can get the posts related to him
     
     //then we get all the posts for current user
+    const currentUser = await User.findById(req.params.userId);
     const userPosts = await Post.find({ userId: currentUser._id });
 
     //Now we get the posts of friends of current user through looping
@@ -117,7 +118,9 @@ router.get("/timeline/all", async (req, res) => {
     );
     res.json(userPosts.concat(...friendPosts))
   } catch (err) {
-    res.status(500).json(err);
+    
+   
+    res.status(500).json(err.message);
   }
 });
 

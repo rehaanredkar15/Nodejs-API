@@ -96,21 +96,19 @@ router.get("/:id", async (req, res) => {
 });
 
 
-//get timeline posts
+// get timeline posts
 router.get("/timeline/:userId", async (req, res) => {
   try {
 
-     //first we get the current user so that we can get the posts related to him
-    
-    //then we get all the posts for current user
+    // wheen we use get request using params instead of body is good practice
     const currentUser = await User.findById(req.params.userId);
+    //  first we get the current user so that we can get the posts related to him
+    // then we get all the posts for current user
     const userPosts = await Post.find({ userId: currentUser._id });
-
-    //Now we get the posts of friends of current user through looping
-    //through their followings list 
-
+    // Now we get the posts of friends of current user through looping
+    // through their followings list 
     // we have used promise here cause we are using loop and every time 
-    //we use loop we need promises 
+    // we use loop we need promises 
     const friendPosts = await Promise.all(
       currentUser.followings.map((friendId) => {
         return Post.find({ userId: friendId });

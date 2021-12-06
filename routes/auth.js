@@ -14,6 +14,7 @@ router.post("/register", async (req, res) => {
     //create new user
     const newUser = new User({
       username: req.body.username,
+      fullname:req.body.fullname,
       email: req.body.email,
       password: hashedPassword,
     });
@@ -22,7 +23,7 @@ router.post("/register", async (req, res) => {
     const user = await newUser.save();
     res.status(200).json(user);
   } catch (err) {
-    res.status(500).json(err)
+    res.status(500).json(err.message)
   }
 });
 

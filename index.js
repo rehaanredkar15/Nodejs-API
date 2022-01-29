@@ -53,6 +53,9 @@ app.listen(PORT,() =>{
     console.log("Our Api is working on 5000 ");
 })
 
+app.get('/',(req,res) => {
+    res.send('Hello to Memories API ');
+})
 
 //when we go to this address this routes run 
 app.use("/api/user",userRoutes);
